@@ -1,10 +1,8 @@
 /**
  * Copyright (c) 2015-present, Facebook, Inc.
- * All rights reserved.
  *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
  */
 
 #import "AppDelegate.h"
@@ -13,8 +11,6 @@
 #import <React/RCTRootView.h>
 
 @implementation AppDelegate
-
-@synthesize oneSignal = _oneSignal;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -33,12 +29,6 @@
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-
-  // For requiring push notification permissions manually.
-  self.oneSignal = [[RCTOneSignal alloc] initWithLaunchOptions:launchOptions
-          appId:@"383c3739-b3b2-409b-b4b9-a17ab5cb9bb5"
-          settings:@{kOSSettingsKeyAutoPrompt: @false}];
-
   return YES;
 }
 

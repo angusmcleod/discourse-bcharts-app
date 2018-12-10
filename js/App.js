@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {  AsyncStorage, WebView, Keyboard, Dimensions,
           Linking, Text, View, TouchableHighlight, Platform,
-          ScrollView, TextInput, Button, Image, AppState, BackHandler } from 'react-native';
+          ScrollView, TextInput, Button, Image, AppState, BackHandler,
+          SafeAreaView } from 'react-native';
 
 import OneSignal from 'react-native-onesignal';
 import SafariView from 'react-native-safari-view';
@@ -494,126 +495,124 @@ class App extends React.Component {
       return false
 
     return (
-      <View style={{
+      <SafeAreaView style={{flex: 1, backgroundColor: global.bgColor}}>
+        <View style={{flex: 1}}
+              onLayout={this._onLayout.bind(this)}>
+          {this.state.uri && this.state.skipLogin &&
+            this.renderWebView()
+          }
+
+          {!this.state.skipLogin &&
+            <ScrollView contentContainerStyle={{
               flex: 1,
               backgroundColor: global.bgColor,
-              paddingTop: (DeviceInfo.getModel() == 'iPhone X') ? 20: 0
-            }}
-            onLayout={this._onLayout.bind(this)}>
-        {this.state.uri && this.state.skipLogin &&
-          this.renderWebView()
-        }
-
-        {!this.state.skipLogin &&
-          <ScrollView contentContainerStyle={{
-            flex: 1,
-            backgroundColor: global.bgColor,
-            padding: 15,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'stretch'
-          }}>
-            {this.state.landscapeLayout && this.state.keyboardVisible ?
-              null :
-              <View style={{
-                flex: 1,
-                paddingVertical: this.state.keyboardVisible ? 6 : 15,
-                alignItems: 'stretch',
-                paddingHorizontal: 20,
-                marginTop: 50
-              }}>
-                <Image
-                  source={require('./logo.png')}
-                  resizeMode={'contain'}
-                  style={{ width: null, height: null, flex:1 }}
-                  />
-              </View>
-            }
-            <View style={{
-              flex: 3,
-              paddingHorizontal: 20,
-              paddingVertical: 10
+              padding: 15,
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'stretch'
             }}>
-              {!this.state.keyboardVisible &&
-                <View style={{flex: 1}}>
-                  <Text style={{
-                    color: global.textColor,
-                    fontSize: 16,
-                    paddingVertical: 10,
-                    textAlign: 'center'
-                    }}>
-                    {global.introText}
-                  </Text>
+              {this.state.landscapeLayout && this.state.keyboardVisible ?
+                null :
+                <View style={{
+                  flex: 1,
+                  paddingVertical: this.state.keyboardVisible ? 6 : 15,
+                  alignItems: 'stretch',
+                  paddingHorizontal: 20,
+                  marginTop: 50
+                }}>
+                  <Image
+                    source={require('./logo.png')}
+                    resizeMode={'contain'}
+                    style={{ width: null, height: null, flex:1 }}
+                    />
                 </View>
               }
-              {global.showLoginForm &&
-                this.renderLoginForm()
-              }
-              {!global.showLoginForm &&
-                this.renderStartButtons()
-              }
-
               <View style={{
-                paddingVertical: 10,
-                alignItems: 'center',
-                flex: 0,
-                justifyContent: 'flex-end'
+                flex: 3,
+                paddingHorizontal: 20,
+                paddingVertical: 10
               }}>
-                <TouchableHighlight
-                  onPress={() => {
-                    this.TOS()
-                }}>
-                  <Text style={{fontSize: 13}}>
-                    <Text style={{color: global.TOSTextColor}}>
-                      {global.TOSText}
+                {!this.state.keyboardVisible &&
+                  <View style={{flex: 1}}>
+                    <Text style={{
+                      color: global.textColor,
+                      fontSize: 16,
+                      paddingVertical: 10,
+                      textAlign: 'center'
+                      }}>
+                      {global.introText}
                     </Text>
-                    <Text style={{color: global.textColor}}>
-                      {global.TOSLinkText}
-                    </Text>
-                  </Text>
-                </TouchableHighlight>
-              </View>
-            </View>
-          </ScrollView>
-        }
+                  </View>
+                }
+                {global.showLoginForm &&
+                  this.renderLoginForm()
+                }
+                {!global.showLoginForm &&
+                  this.renderStartButtons()
+                }
 
-        {(this.state.promptToConnect && this.state.skipLogin) &&
-          <View style={{
-            height: 50,
-            backgroundColor: global.bgColor,
-            padding: 8,
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            <TouchableHighlight
-              style={{
-                backgroundColor: global.connectButtonBgColor,
-                height: 28,
-                padding: 4,
-                borderRadius: 2
-              }}
-              onPress={() => {
-                this.loadDiscourseAuth()
+                <View style={{
+                  paddingVertical: 10,
+                  alignItems: 'center',
+                  flex: 0,
+                  justifyContent: 'flex-end'
+                }}>
+                  <TouchableHighlight
+                    onPress={() => {
+                      this.TOS()
+                  }}>
+                    <Text style={{fontSize: 13}}>
+                      <Text style={{color: global.TOSTextColor}}>
+                        {global.TOSText}
+                      </Text>
+                      <Text style={{color: global.textColor}}>
+                        {global.TOSLinkText}
+                      </Text>
+                    </Text>
+                  </TouchableHighlight>
+                </View>
+              </View>
+            </ScrollView>
+          }
+
+          {(this.state.promptToConnect && this.state.skipLogin) &&
+            <View style={{
+              height: 50,
+              backgroundColor: global.bgColor,
+              padding: 8,
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              flex: 1,
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
-              <Text style={{
-                color: global.connectButtonTextColor,
-                fontSize: 14,
-                paddingLeft: 8,
-                paddingRight: 8,
-                fontFamily: 'HelveticaNeue-Medium'
+              <TouchableHighlight
+                style={{
+                  backgroundColor: global.connectButtonBgColor,
+                  height: 28,
+                  padding: 4,
+                  borderRadius: 2
+                }}
+                onPress={() => {
+                  this.loadDiscourseAuth()
               }}>
-                {global.connectText}
-              </Text>
-            </TouchableHighlight>
-          </View>
-        }
-      </View>
+                <Text style={{
+                  color: global.connectButtonTextColor,
+                  fontSize: 14,
+                  paddingLeft: 8,
+                  paddingRight: 8,
+                  fontFamily: 'HelveticaNeue-Medium'
+                }}>
+                  {global.connectText}
+                </Text>
+              </TouchableHighlight>
+            </View>
+          }
+        </View>
+      </SafeAreaView>
     );
   }
 }
