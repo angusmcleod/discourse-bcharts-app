@@ -12,7 +12,7 @@
 		"react-native-cookies": "^3.3.0",
 		"react-native-device-info": "^0.13.0",
 		"react-native-key-pair": "git+https://github.com/samsaffron/react-native-key-pair.git",
-		"react-native-onesignal": "^3.1.4",
+		"react-native-onesignal": "^3.2.11",
 		"react-native-safari-view": "^2.1.0"
 	},
 	"devDependencies": {
