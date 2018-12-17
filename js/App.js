@@ -253,6 +253,9 @@ class App extends React.Component {
     if (event.url.includes('about:')) {
       return false;
     }
+    if (event.url.includes('googleads')) {
+      return false;
+    }
     const internalLink = global.internalURLs.some(v => event.url.includes(v));
     if (Platform.OS === 'ios' && event.url.indexOf(site) === -1 && !internalLink) {
       SafariView.show({url: event.url});
@@ -303,7 +306,6 @@ class App extends React.Component {
       <CustomWebView
         style={{
           marginBottom: this.state.promptToConnect ? 50 : 0,
-          marginTop: 20
         }}
         ref={(ref) => { this.webview = ref; }}
         source={{ uri: this.state.uri }}
